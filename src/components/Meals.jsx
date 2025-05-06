@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import MealItem from "./MealItem";
 
 export default function Meals() {
   const [loadedMeals, setLoadedMeals] = useState([]);
@@ -8,25 +9,19 @@ export default function Meals() {
     async function fetchMeals() {
       const response = await fetch("http://localhost:3000/meals");
 
-      const responseData = response.json();
+      const responseData = await response.json();
 
       setLoadedMeals(responseData);
     }
+
+    fetchMeals();
   }, []);
 
   return (
     <ul id="meals">
-      {loadedMeals.map((meal) => {
-        <li key={meal.id} className="meal-item">
-          <article>
-            <img src={meal.price} alt="price of the meal" />
-            <h3>{meal.name}</h3>
-            <p className="price">{meal.price}</p>
-            <p className="description">{meal.description}</p>
-            <button className="actions">Add to Cart</button>
-          </article>
-        </li>;
-      })}
+      {loadedMeals.map((meal) => (
+        <MealItem key={meal.id} meal={meal} />
+      ))}
     </ul>
   );
 }
