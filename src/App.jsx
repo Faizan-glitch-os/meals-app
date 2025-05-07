@@ -1,15 +1,15 @@
 import Header from "./components/Headerr";
 import Meals from "./components/Meals";
 import { CartContextProvider } from "./store/CartContext";
-import { UserProgressCartProvider } from "./store/UserProgressContext";
+import { UserProgressContextProvider } from "./store/UserProgressContext";
 
 function App() {
   return (
     <CartContextProvider>
-      <UserProgressCartProvider>
+      <UserProgressContextProvider>
         <Header />
         <Meals />
-      </UserProgressCartProvider>
+      </UserProgressContextProvider>
     </CartContextProvider>
   );
 }
