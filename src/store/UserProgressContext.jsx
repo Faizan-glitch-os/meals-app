@@ -38,3 +38,5 @@ export function UserProgressCartProvider({ children }) {
     </UserProgressCart.Provider>
   );
 }
+
+export default UserProgressCart;

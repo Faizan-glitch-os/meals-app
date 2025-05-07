@@ -1,16 +1,20 @@
 import { useEffect, useRef } from "react";
 
 export default function Modal({ children, open, className = "" }) {
-  const modal = useRef();
+  const modalRef = useRef();
 
   useEffect(() => {
+    const modal = modalRef.current;
+
     if (open) {
-      modal.current.showModal();
+      modal.showModal();
     }
+
+    return () => modal.close();
   }, [open]);
 
   return (
-    <dialog ref={modal} className={`modal ${className}`}>
+    <dialog ref={modalRef} className={`modal ${className}`}>
       {children}
     </dialog>
   );
