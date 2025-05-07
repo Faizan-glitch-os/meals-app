@@ -2,7 +2,7 @@ import { useContext } from "react";
 import logo from "../assets/logo.jpg";
 
 import Button from "./ui/Button";
-import CartContext from "../store/CarContext";
+import CartContext from "../store/CartContext";
 
 export default function Header() {
   const cartCtx = useContext(CartContext);
