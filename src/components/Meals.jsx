@@ -1,4 +1,5 @@
 import useHttp from "../hooks/useHttp";
+import Error from "./Error";
 import MealItem from "./MealItem";
 
 const config = {};
@@ -21,7 +22,7 @@ export default function Meals() {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <Error title="Failed to fetch" message={error} />;
   }
 
   return (

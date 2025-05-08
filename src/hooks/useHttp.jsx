@@ -12,7 +12,7 @@ async function sendHttpRequest(url, config) {
   return responseData;
 }
 
-export default function useHttp({ url, config, initialData }) {
+export default function useHttp(url, config, initialData) {
   const [loadedData, setLoadedData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -25,6 +25,7 @@ export default function useHttp({ url, config, initialData }) {
         setLoadedData(responseData);
       } catch (error) {
         setError(error.message || "Something went wrong");
+      } finally {
         setLoading(false);
       }
       setLoading(false);
@@ -36,7 +37,7 @@ export default function useHttp({ url, config, initialData }) {
     if ((config && (config.method === "GET" || !config.method)) || !config) {
       sendRequest();
     }
-  }, [sendHttpRequest, config]);
+  }, [sendRequest, config]);
 
-  return { loadedData, loading, error, sendRequest: sendHttpRequest };
+  return { loadedData, loading, error, sendRequest };
 }
