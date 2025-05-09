@@ -4,6 +4,8 @@ import Modal from "./Modal";
 import CartContext from "../store/CartContext";
 import Input from "./Input";
 import Button from "./ui/Button";
+import SuccessOrder from "../components/SuccessOrder";
+import Error from "./Error";
 import UserProgressContext from "../store/UserProgressContext";
 import useHttp from "../hooks/useHttp";
 
@@ -60,6 +62,8 @@ export default function Checkout() {
     actions = <p>Submitting order...</p>;
   }
 
+  console.log(error);
+
   return (
     <Modal
       open={userProgressCtx.progress === "checkout"}
@@ -76,6 +80,8 @@ export default function Checkout() {
         <div className="control-row">
           <Input label="Postal Code" id="postal-code" type="text" />
           <Input label="City" id="city" type="text" />
+
+          {error && <Error title="Failed to submit order" message={error} />}
 
           <p className="modal-actions">{actions}</p>
         </div>
