@@ -5,10 +5,22 @@ import CartContext from "../store/CartContext";
 import Input from "./Input";
 import Button from "./ui/Button";
 import UserProgressContext from "../store/UserProgressContext";
+import useHttp from "../hooks/useHttp";
+
+const config = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+};
 
 export default function Checkout() {
   const cartCtx = useContext(CartContext);
   const userProgressCtx = useContext(UserProgressContext);
+
+  const { loadedData, loading, error, sendRequest } = useHttp(
+    "http://localhost:3000/orders",
+    config,
+    []
+  );
 
   const totalPrice = cartCtx.items.reduce(
     (totalAmout, item) => totalAmout + item.quantity * item.price,
@@ -25,18 +37,27 @@ export default function Checkout() {
     const formData = new FormData(event.target);
     const userData = Object.fromEntries(formData.entries());
 
-    fetch("http://localhost:3000/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    sendRequest(
+      JSON.stringify({
         order: {
           items: cartCtx.items,
           customer: userData,
         },
-      }),
-    });
+      })
+    );
+  }
+
+  let actions = (
+    <>
+      <Button type="button" textOnly onClick={handleOnClose}>
+        Close
+      </Button>
+      <Button type="submit">Confirm Order</Button>
+    </>
+  );
+
+  if (loading) {
+    actions = <p>Submitting order...</p>;
   }
 
   return (
@@ -48,7 +69,7 @@ export default function Checkout() {
         <h2>Checkout</h2>
         <p>Total: {currencyFormatter.format(totalPrice)} </p>
 
-        <Input label="Full Name" id="full-name" type="text" />
+        <Input label="Full Name" id="name" type="text" />
         <Input label="Email" id="email" type="email" />
         <Input label="Street" id="street" type="text" />
 
@@ -56,12 +77,7 @@ export default function Checkout() {
           <Input label="Postal Code" id="postal-code" type="text" />
           <Input label="City" id="city" type="text" />
 
-          <p className="modal-actions">
-            <Button textOnly onClick={handleOnClose}>
-              Close
-            </Button>
-            <Button>Confirm Order</Button>
-          </p>
+          <p className="modal-actions">{actions}</p>
         </div>
       </form>
     </Modal>
